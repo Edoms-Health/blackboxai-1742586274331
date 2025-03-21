@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edoms Tally - Financial Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Login Section -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center">
+                    <i class="fas fa-wallet text-3xl text-green-700 mr-2"></i>
+                    <h1 class="text-3xl font-bold text-green-700">Edoms Tally</h1>
+                </div>
+                <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+            </div>
+            <form id="loginForm" class="mt-8 space-y-6">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email" class="sr-only">Email/Phone</label>
+                        <input id="email" name="email" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm" placeholder="Email or Phone number">
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm" placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a href="#" class="font-medium text-green-600 hover:text-green-500" onclick="showForgotPassword()">
+                            Forgot your password?
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Sign in
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <hr class="w-1/3 border-gray-300">
+                    <span class="text-gray-500">or</span>
+                    <hr class="w-1/3 border-gray-300">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="button" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <img class="h-5 w-5 mr-2" src="https://www.google.com/favicon.ico" alt="Google logo">
+                        Google
+                    </button>
+                    <button type="button" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                        Facebook
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <button type="button" class="text-green-600 hover:text-green-500" onclick="showRegistration()">
+                        Create new account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application (Initially Hidden) -->
+    <div id="mainApp" class="hidden">
+        <!-- Navigation -->
+        <nav class="bg-white shadow-lg">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <i class="fas fa-wallet text-2xl text-green-700 mr-2"></i>
+                            <span class="text-xl font-bold text-green-700">Edoms Tally</span>
+                        </div>
+                        <div class="hidden md:flex items-center space-x-4 ml-10">
+                            <a href="#" class="nav-link text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium active" data-section="dashboard">Dashboard</a>
+                            <a href="#" class="nav-link text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium" data-section="expenses">Expenses</a>
+                            <a href="#" class="nav-link text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium" data-section="sacco">SACCO Groups</a>
+                            <a href="#" class="nav-link text-gray-700 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium" data-section="reports">Reports</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="addExpenseBtn" class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Expense
+                        </button>
+                        <div class="relative">
+                            <button id="userMenuBtn" class="flex items-center space-x-2">
+                                <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=User" alt="User avatar">
+                                <span class="text-gray-700">John Doe</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section active">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Total Balance Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Balance</h3>
+                            <i class="fas fa-wallet text-2xl text-green-600"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 mt-4">USh 1,500,000</p>
+                        <div class="flex items-center mt-2 text-sm">
+                            <span class="text-green-600"><i class="fas fa-arrow-up"></i> 8.2%</span>
+                            <span class="text-gray-500 ml-2">from last month</span>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Spending Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-700">Monthly Spending</h3>
+                            <i class="fas fa-chart-line text-2xl text-blue-600"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 mt-4">USh 450,000</p>
+                        <div class="mt-2">
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div class="h-full bg-blue-600 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">75% of monthly budget</p>
+                        </div>
+                    </div>
+
+                    <!-- Savings Progress Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-700">Savings Goal</h3>
+                            <i class="fas fa-piggy-bank text-2xl text-yellow-600"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 mt-4">USh 2,000,000</p>
+                        <div class="mt-2">
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div class="h-full bg-yellow-600 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">60% of goal reached</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Spending by Category -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Spending by Category</h3>
+                        <canvas id="categoryChart" width="400" height="300"></canvas>
+                    </div>
+
+                    <!-- Monthly Trend -->
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Monthly Trend</h3>
+                        <canvas id="trendChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Transactions</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="recentTransactions">
+                                    <!-- Transactions will be added here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SACCO Groups Section -->
+            <div id="sacco-section" class="section hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">SACCO Groups</h2>
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700" onclick="showCreateGroupModal()">
+                        <i class="fas fa-plus mr-2"></i> Create Group
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Sample SACCO Group Card -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-700">Family Savings</h3>
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Members</span>
+                                    <span class="font-medium">12</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Total Savings</span>
+                                    <span class="font-medium">USh 5,000,000</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Next Contribution</span>
+                                    <span class="font-medium">March 25, 2024</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="text-sm text-gray-500 mb-1">Savings Goal Progress</div>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="h-full bg-green-600 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">75% of USh 10,000,000 goal</div>
+                            </div>
+                            <div class="mt-6">
+                                <button class="w-full bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div class="modal" id="addExpenseModal">
+        <div class="modal-content">
+            <button type="button" class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Add New Expense</h2>
+            <form id="addExpenseForm" class="space-y-4">
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" required placeholder="Enter expense description">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" required min="0" step="1000">
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod" name="paymentMethod" required>
+                        <option value="Cash">Cash</option>
+                        <option value="MTN Money">MTN Money</option>
+                        <option value="Airtel Money">Airtel Money</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200" onclick="hideModal('addExpenseModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
+                        Add Expense
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create SACCO Group Modal -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <button type="button" class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Create SACCO Group</h2>
+            <form id="createGroupForm" class="space-y-4">
+                <div class="form-group">
+                    <label for="groupName">Group Name</label>
+                    <input type="text" id="groupName" name="groupName" required placeholder="Enter group name">
+                </div>
+                <div class="form-group">
+                    <label for="groupPurpose">Purpose</label>
+                    <input type="text" id="groupPurpose" name="groupPurpose" required placeholder="e.g., Family Savings">
+                </div>
+                <div class="form-group">
+                    <label for="savingsGoal">Savings Goal</label>
+                    <input type="number" id="savingsGoal" name="savingsGoal" required min="0" step="100000">
+                </div>
+                <div class="form-group">
+                    <label for="contributionFrequency">Contribution Frequency</label>
+                    <select id="contributionFrequency" name="contributionFrequency" required>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="minContribution">Minimum Contribution</label>
+                    <input type="number" id="minContribution" name="minContribution" required min="0" step="10000">
+                </div>
+                <div class="form-group">
+                    <label for="privacy">Group Privacy</label>
+                    <select id="privacy" name="privacy" required>
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200" onclick="hideModal('createGroupModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
+                        Create Group
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
